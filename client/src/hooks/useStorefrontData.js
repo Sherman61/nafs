@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? '/api';
+const apiClient = axios.create({ baseURL: apiBaseUrl });
+
 export const useStorefrontData = () => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
@@ -11,8 +14,8 @@ export const useStorefrontData = () => {
     const fetchData = async () => {
       try {
         const [categoriesResponse, productsResponse] = await Promise.all([
-          axios.get('/api/categories'),
-          axios.get('/api/products')
+          apiClient.get('/categories'),
+          apiClient.get('/products')
         ]);
         setCategories(categoriesResponse.data);
         setProducts(productsResponse.data);

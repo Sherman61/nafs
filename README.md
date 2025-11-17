@@ -37,6 +37,20 @@ any other provider when you are ready for production.
 4. Visit `http://localhost:5173` to browse the storefront. The client proxies `/api/*` requests to
    the local Node API so you can explore the complete demo without additional configuration.
 
+## Running with Docker
+
+You can also boot the full stack with Docker for a reproducible environment:
+
+```bash
+docker compose -f docker.yaml up --build
+```
+
+This command builds the images defined in `client/Dockerfile` and `server/Dockerfile`, wires the
+containers together on an internal network, and publishes ports `5000` (API) and `5173` (Vite client)
+to your host. The compose file injects the `VITE_API_BASE_URL` and `VITE_API_PROXY_TARGET`
+environment variables so the React storefront automatically talks to the API, whether you are running
+in Docker or locally. Stop the stack with `Ctrl+C` or `docker compose -f docker.yaml down`.
+
 ## Project structure
 
 ```
