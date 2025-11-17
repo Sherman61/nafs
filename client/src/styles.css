@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.hero-bg {
+  background-image: linear-gradient(120deg, rgba(207, 185, 149, 0.25), rgba(92, 67, 39, 0.55)),
+    url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=60');
+  background-size: cover;
+  background-position: center;
+}
+
+.card-shadow {
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.07);
+}
