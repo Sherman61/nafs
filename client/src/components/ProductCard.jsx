@@ -8,7 +8,7 @@ export default function ProductCard({ product, onAddToCart }) {
       <div className="relative">
         <img src={product.media} alt={product.name} className="h-60 w-full object-cover" loading="lazy" />
         <span className="absolute right-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold">
-          {product.categoryId.replace('cat-', '')}
+          {product.categoryLabel ?? product.categoryId.replace('cat-', '')}
         </span>
       </div>
       <div className="flex flex-1 flex-col gap-4 p-6">

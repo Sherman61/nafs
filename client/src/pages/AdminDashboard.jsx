@@ -5,7 +5,7 @@ import {
   isValidProjectForm
 } from '../utils/projectUtils.js';
 
-const STORAGE_KEY = 'medusah-admin-projects';
+const STORAGE_KEY = 'lefanek-ahava-admin-projects';
 const defaultForm = {
   name: '',
   price: '',
@@ -65,7 +65,7 @@ export default function AdminDashboard({ navigate }) {
     setFormData(defaultForm);
     setFeedback({
       type: 'success',
-      message: 'Project staged locally. Connect the API to persist it in your Medusa store.'
+      message: 'Project staged locally. Connect the API to persist it in your Lefanek Ahava store.'
     });
   };
 
@@ -75,10 +75,9 @@ export default function AdminDashboard({ navigate }) {
         <header className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.3em] text-brand-dark/60">Admin</p>
-            <h1 className="text-4xl font-display">Product launch control</h1>
+            <h1 className="text-4xl font-display">Lefanek Ahava launch control</h1>
             <p className="mt-2 text-brand-dark/70">
-              Stage new ritual projects, price them, and drop a Stripe checkout URL before syncing with
-              the production API.
+              Stage new tees, wraps, and accessories before you sync the updates with your production backend.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -129,7 +128,7 @@ export default function AdminDashboard({ navigate }) {
                 value={formData.name}
                 onChange={handleChange}
                 className="mt-1 w-full rounded-2xl border border-brand-dark/20 px-4 py-2"
-                placeholder="Moon Oil Mini"
+                placeholder="Ahava Script Tee"
               />
             </div>
             <div className="grid gap-4 md:grid-cols-2">
@@ -221,8 +220,7 @@ export default function AdminDashboard({ navigate }) {
             </div>
             {projects.length === 0 ? (
               <p className="text-brand-dark/70">
-                Your queue is empty. Add a project on the left to simulate how you would prep a Medusa
-                product before syncing it to the backend.
+                Your queue is empty. Add a project on the left to simulate how you would prep a drop before syncing it to the backend.
               </p>
             ) : (
               <ul className="space-y-3">

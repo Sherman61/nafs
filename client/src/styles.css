@@ -12,7 +12,7 @@ body {
 
 .hero-bg {
   background-image: linear-gradient(120deg, rgba(207, 185, 149, 0.25), rgba(92, 67, 39, 0.55)),
-    url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=60');
+    url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1600&q=60');
   background-size: cover;
   background-position: center;
 }

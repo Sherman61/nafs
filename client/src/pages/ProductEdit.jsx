@@ -60,7 +60,7 @@ export default function ProductEdit({ navigate }) {
     setFeedback({
       type: 'success',
       message:
-        'Updates staged locally. Wire this form to your Medusa admin API to persist the changes.'
+        'Updates staged locally. Wire this form to your commerce backend to persist the changes.'
     });
   };
 
@@ -80,8 +80,8 @@ export default function ProductEdit({ navigate }) {
             <p className="text-sm uppercase tracking-[0.3em] text-brand-dark/60">Admin</p>
             <h1 className="text-4xl font-display">Edit catalog product</h1>
             <p className="mt-2 text-brand-dark/70">
-              Mirror how a Medusa admin workflow might look when tweaking pricing, imagery, or copy for
-              existing ritual goods.
+              Mirror how a Lefanek Ahava admin workflow might look when tweaking pricing, imagery, or copy for
+              tees and tallit-inspired layers.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
