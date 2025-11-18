@@ -75,19 +75,26 @@ state (our cart service keeps carts in-memory, for example). Swap the seed data 
 
 ## Running with Docker
 
-You can also boot the full stack with Docker for a reproducible environment:
-
-```bash
-docker compose -f docker.yaml up --build
-```
-
-This command builds the images defined in `client/Dockerfile` and `server/Dockerfile`, wires the
-containers together on an internal network, and publishes ports `5000` (API) and `5173` (Vite client)
-to your host. Once the stack is up, open `http://localhost:5173/` for the storefront or
+You can also boot the full stack with Docker for a reproducible environment. The default compose file
+(`docker-compose.yml`) builds the images defined in `client/Dockerfile` and `server/Dockerfile`, wires
+the containers together on an internal network, and publishes ports `5000` (API) and `5173` (Vite
+client) to your host. Once the stack is up, open `http://localhost:5173/` for the storefront or
 `http://localhost:5173/admin` for the dashboard. The compose file injects the `VITE_API_BASE_URL` and
 `VITE_API_PROXY_TARGET` environment variables so the React storefront automatically talks to the API,
-whether you are running in Docker or locally. Stop the stack with `Ctrl+C` or
-`docker compose -f docker.yaml down`.
+whether you are running in Docker or locally.
+
+Start or tear down the stack however you prefer:
+
+```bash
+# rebuilds and starts everything (same as docker compose up --build)
+scripts/deploy.sh
+
+# run the compose file manually if you want to pass flags
+docker compose up --build
+
+# stop the running containers
+docker compose down
+```
 
 ## Project structure
 
