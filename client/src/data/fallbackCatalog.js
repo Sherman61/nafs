@@ -1,4 +1,4 @@
-export const categories = [
+export const fallbackCategories = [
   {
     id: 'cat-tees',
     name: 'Heritage Tees',
@@ -16,14 +16,15 @@ export const categories = [
   }
 ];
 
-export const products = [
+export const fallbackProducts = [
   {
     id: 'ahava-script-tee',
     name: 'Ahava Script Tee',
     price: 52,
     categoryId: 'cat-tees',
     categoryLabel: 'Heritage Tee',
-    media: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80',
+    media:
+      'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80',
     shortDescription: 'Relaxed unisex tee with hand-painted “ahava” calligraphy.',
     description:
       'Printed on our signature organic cotton jersey with a water-based ink so the Hebrew love lettering softens with every wear.'
@@ -34,7 +35,8 @@ export const products = [
     price: 58,
     categoryId: 'cat-tees',
     categoryLabel: 'Pocket Tee',
-    media: 'https://images.unsplash.com/photo-1490111718993-d98654ce6cf7?auto=format&fit=crop&w=900&q=80',
+    media:
+      'https://images.unsplash.com/photo-1490111718993-d98654ce6cf7?auto=format&fit=crop&w=900&q=80',
     shortDescription: 'Cream pocket tee embroidered with a tonal shalom blessing.',
     description:
       'The subtle stitchwork rests over your heart as a quiet reminder to carry peace into errands, coffee walks, and Zoom calls.'
@@ -45,7 +47,8 @@ export const products = [
     price: 128,
     categoryId: 'cat-shabbat',
     categoryLabel: 'Wrap Layer',
-    media: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80',
+    media:
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80',
     shortDescription: 'Featherweight wrap with tzitzit-inspired fringe.',
     description:
       'Woven in Safed-inspired stripes so it drapes beautifully over dresses or denim after candle lighting.'
@@ -56,7 +59,8 @@ export const products = [
     price: 42,
     categoryId: 'cat-accessories',
     categoryLabel: 'Accessory',
-    media: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80',
+    media:
+      'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80',
     shortDescription: 'Hand-stitched navy kippah with silver lining.',
     description:
       'Lined with soft satin so it stays in place during dancing, with a discreet clip pocket on the interior.'
@@ -67,7 +71,8 @@ export const products = [
     price: 188,
     categoryId: 'cat-shabbat',
     categoryLabel: 'Outerwear',
-    media: 'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=900&q=80',
+    media:
+      'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=900&q=80',
     shortDescription: 'Wool varsity jacket appliquéd with Hebrew letters.',
     description:
       'A limited run featuring chenille patches that spell out “or gadol” across the back for luminous winter nights.'

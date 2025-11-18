@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-const CART_STORAGE_KEY = 'medusah-cart';
+const CART_STORAGE_KEY = 'lefanek-ahava-cart';
 
 const getStoredCart = () => {
   if (typeof window === 'undefined') return [];
@@ -98,7 +98,7 @@ export default function Checkout({ navigate }) {
       setProcessing(false);
       setFeedback({
         type: 'success',
-        message: 'Order routed to fulfillment. Keep iterating to connect your live Medusa backend.'
+        message: 'Order routed to fulfillment. Connect your live commerce backend when you are ready.'
       });
       setCartItems([]);
       persistCart([]);
@@ -119,10 +119,9 @@ export default function Checkout({ navigate }) {
         <header className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.3em] text-brand-dark/60">Checkout</p>
-            <h1 className="text-4xl font-display">Confirm your ritual order</h1>
+            <h1 className="text-4xl font-display">Confirm your Lefanek Ahava order</h1>
             <p className="mt-2 text-brand-dark/70">
-              Cart items now persist locally so you can design an end-to-end checkout flow before wiring
-              it up to your API.
+              Cart items now persist locally so you can design fittings-to-fulfillment flows before wiring them to your API.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
