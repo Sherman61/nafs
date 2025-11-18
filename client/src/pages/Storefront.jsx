@@ -1,10 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Header from '../components/Header.jsx';
 import ProductCard from '../components/ProductCard.jsx';
 import CartDrawer from '../components/CartDrawer.jsx';
 import CategoryPills from '../components/CategoryPills.jsx';
 import { useStorefrontData } from '../hooks/useStorefrontData.js';
 
+const CART_STORAGE_KEY = 'medusah-cart';
 const testimonials = [
   {
     quote:
@@ -17,12 +18,41 @@ const testimonials = [
   }
 ];
 
+const getStoredCart = () => {
+  if (typeof window === 'undefined') return [];
+  try {
+    const stored = window.localStorage.getItem(CART_STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch (error) {
+    console.error('Failed to read stored cart items', error);
+    return [];
+  }
+};
+
+const persistCart = (items) => {
+  if (typeof window === 'undefined') return;
+  try {
+    if (items.length === 0) {
+      window.localStorage.removeItem(CART_STORAGE_KEY);
+    } else {
+      window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+    }
+  } catch (error) {
+    console.error('Failed to persist cart items', error);
+  }
+};
+
 export default function Storefront({ navigate }) {
   const { categories, products, loading, error, filterProductsByCategory } = useStorefrontData();
   const [activeCategory, setActiveCategory] = useState(null);
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(() => getStoredCart());
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [checkoutMessage, setCheckoutMessage] = useState('');
+  const checkoutMessage =
+    'Cart interactions now persist locally so you can test drive the new checkout experience.';
+
+  useEffect(() => {
+    persistCart(cartItems);
+  }, [cartItems]);
 
   const visibleProducts = useMemo(() => filterProductsByCategory(activeCategory), [
     activeCategory,
@@ -43,8 +73,12 @@ export default function Storefront({ navigate }) {
   };
 
   const handleCheckout = () => {
-    setCheckoutMessage('Thank you! Your ritual kit is being assembled.');
-    setCartItems([]);
+    setIsCartOpen(false);
+    if (navigate) {
+      navigate('/checkout');
+    } else if (typeof window !== 'undefined') {
+      window.location.href = '/checkout';
+    }
   };
 
   return (
@@ -159,6 +193,7 @@ export default function Storefront({ navigate }) {
         onClose={() => setIsCartOpen(false)}
         items={cartItems}
         onCheckout={handleCheckout}
+        checkoutDisabled={cartItems.length === 0}
       />
     </div>
   );

@@ -4,6 +4,7 @@ const navigation = [
   { name: 'Rituals', href: '#collections' },
   { name: 'Bestsellers', href: '#bestsellers' },
   { name: 'Journal', href: '#journal' },
+  { name: 'Checkout', href: '/checkout' },
   { name: 'Admin', href: '/admin' }
 ];
 
