@@ -1,0 +1,214 @@
+{
+  "store": {
+    "name": "Nafs Live Commerce",
+    "currency_code": "usd"
+  },
+  "regions": [
+    {
+      "name": "United States",
+      "currency_code": "usd",
+      "tax_rate": 0,
+      "payment_providers": ["pp_manual"],
+      "fulfillment_providers": ["manual"],
+      "countries": ["us"]
+    }
+  ],
+  "product_categories": [
+    {
+      "name": "Heritage Tees",
+      "description": "Super-soft cotton tees that pair Hebrew typography with modern streetwear cuts."
+    },
+    {
+      "name": "Shabbat Layers",
+      "description": "Elevated wraps and jackets inspired by tallit textiles for Friday night dinners."
+    },
+    {
+      "name": "Everyday Accessories",
+      "description": "Kippot, scarves, and totes that carry blessings into the rest of the week."
+    }
+  ],
+  "products": [
+    {
+      "title": "Ahava Script Tee",
+      "subtitle": "Relaxed unisex tee with hand-painted calligraphy",
+      "description": "Printed on organic cotton jersey with water-based ink so the lettering softens with every wear.",
+      "status": "published",
+      "images": [
+        "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80"
+      ],
+      "options": [
+        {
+          "title": "Size"
+        }
+      ],
+      "variants": [
+        {
+          "title": "Default",
+          "sku": "ahava-script-tee",
+          "inventory_quantity": 50,
+          "options": [
+            {
+              "value": "One Size"
+            }
+          ],
+          "prices": [
+            {
+              "amount": 5200,
+              "currency_code": "usd"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Shalom Pocket Tee",
+      "subtitle": "Cream pocket tee embroidered with a tonal blessing",
+      "description": "The subtle stitchwork rests over your heart as a quiet reminder to carry peace everywhere.",
+      "status": "published",
+      "images": [
+        "https://images.unsplash.com/photo-1490111718993-d98654ce6cf7?auto=format&fit=crop&w=900&q=80"
+      ],
+      "options": [
+        {
+          "title": "Size"
+        }
+      ],
+      "variants": [
+        {
+          "title": "Default",
+          "sku": "shalom-pocket-tee",
+          "inventory_quantity": 40,
+          "options": [
+            {
+              "value": "One Size"
+            }
+          ],
+          "prices": [
+            {
+              "amount": 5800,
+              "currency_code": "usd"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Linen Tallit Wrap",
+      "subtitle": "Featherweight wrap with tzitzit-inspired fringe",
+      "description": "Woven in Safed-inspired stripes so it drapes beautifully over dresses or denim after candle lighting.",
+      "status": "published",
+      "images": [
+        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80"
+      ],
+      "options": [
+        {
+          "title": "Size"
+        }
+      ],
+      "variants": [
+        {
+          "title": "Default",
+          "sku": "linen-tallit-wrap",
+          "inventory_quantity": 35,
+          "options": [
+            {
+              "value": "One Size"
+            }
+          ],
+          "prices": [
+            {
+              "amount": 12800,
+              "currency_code": "usd"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Midnight Velvet Kippah",
+      "subtitle": "Hand-stitched navy kippah with silver lining",
+      "description": "Lined with soft satin so it stays in place during dancing, with a discreet clip pocket on the interior.",
+      "status": "published",
+      "images": [
+        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80"
+      ],
+      "options": [
+        {
+          "title": "Size"
+        }
+      ],
+      "variants": [
+        {
+          "title": "Default",
+          "sku": "midnight-kippah",
+          "inventory_quantity": 70,
+          "options": [
+            {
+              "value": "One Size"
+            }
+          ],
+          "prices": [
+            {
+              "amount": 4200,
+              "currency_code": "usd"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Diaspora Varsity Jacket",
+      "subtitle": "Wool varsity jacket appliquéd with Hebrew letters",
+      "description": "A limited run featuring chenille patches that spell out 'or gadol' across the back for luminous winter nights.",
+      "status": "published",
+      "images": [
+        "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=900&q=80"
+      ],
+      "options": [
+        {
+          "title": "Size"
+        }
+      ],
+      "variants": [
+        {
+          "title": "Default",
+          "sku": "diaspora-varsity",
+          "inventory_quantity": 20,
+          "options": [
+            {
+              "value": "One Size"
+            }
+          ],
+          "prices": [
+            {
+              "amount": 18800,
+              "currency_code": "usd"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "product_category_products": [
+    {
+      "product": "Ahava Script Tee",
+      "product_category": "Heritage Tees"
+    },
+    {
+      "product": "Shalom Pocket Tee",
+      "product_category": "Heritage Tees"
+    },
+    {
+      "product": "Linen Tallit Wrap",
+      "product_category": "Shabbat Layers"
+    },
+    {
+      "product": "Midnight Velvet Kippah",
+      "product_category": "Everyday Accessories"
+    },
+    {
+      "product": "Diaspora Varsity Jacket",
+      "product_category": "Shabbat Layers"
+    }
+  ]
+}

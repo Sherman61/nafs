@@ -1,128 +1,124 @@
-# nafs medusah commerce demo
+# Nafs live commerce stack
 
-This repository contains a small ecommerce experience inspired by the "Medusah" stack the client
-requested: a Node/Express API plus a React (Vite) storefront powered by Tailwind CSS. The server now
-boots a lightweight MedusaJS-style application container so that product, category, and cart logic is
-managed through Medusa-like modules rather than ad-hoc Express handlers. The setup is split into two
-workspaces:
+This repository now runs on the **official Medusa backend packages** so you can ship the exact live
+commerce architecture you described: a Medusa API for admins/live shopping plus the React/Tailwind
+storefront.
 
-- `server/` – Express API powered by a tiny Medusa container that exposes categories, products, and a
-  lightweight in-memory cart service.
-- `client/` – Vite + React storefront that consumes the API and renders a cart-enabled shopping
-  experience.
+- `server/` – Medusa backend configured with Stripe and PayPal payment plugins, Redis-powered cache
+  + event bus, and a seed file that mirrors the sample collection from the design brief.
+- `client/` – Vite + React storefront that consumes Medusa's `/store/*` APIs and gracefully falls back
+  to bundled data if the backend is offline.
 
-The stack is intentionally simple so you can swap in a full MedusaJS backend, PHP/MySQL services, or
-any other provider when you are ready for production.
+Everything (Postgres, Redis, Medusa, and the storefront) can be launched with Docker so you can copy
+this stack straight to your production host.
 
-## Getting started
+## Prerequisites
 
-1. Install dependencies inside both workspaces:
+- Node 18+ and npm if you plan to run Medusa or the client locally.
+- Docker + Docker Compose if you want the one-command environment.
+- Stripe + PayPal sandbox credentials for payments (set via environment variables).
+
+## Local development (without Docker)
+
+1. **Install dependencies**
 
    ```bash
    cd server && npm install
    cd ../client && npm install
    ```
 
-2. Start the API (port `5000` by default):
+2. **Provide environment variables** – copy `server/.env.example` (or create `.env`) with at least the
+   following values:
+
+   ```env
+   DATABASE_URL=postgres://localhost:5432/medusa
+   REDIS_URL=redis://localhost:6379
+   STORE_CORS=http://localhost:5173
+   ADMIN_CORS=http://localhost:7001
+   STRIPE_API_KEY=sk_test_xxx
+   STRIPE_WEBHOOK_SECRET=whsec_xxx
+   PAYPAL_CLIENT_ID=your-id
+   PAYPAL_CLIENT_SECRET=your-secret
+   ```
+
+3. **Run dependencies** – start Postgres + Redis however you prefer (Docker, brew, etc.).
+
+4. **Seed Medusa** (first run only):
 
    ```bash
    cd server
-   npm run start
+   npm run seed
    ```
 
-3. In a separate terminal, start the React development server (proxied to the API):
+5. **Start the backend**
+
+   ```bash
+   cd server
+   npm run develop
+   ```
+
+6. **Start the storefront** (new terminal):
 
    ```bash
    cd client
    npm run dev
    ```
 
-4. Visit `http://localhost:5173` to browse the storefront. The client proxies `/api/*` requests to
-   the local Node API so you can explore the complete demo without additional configuration. The
-   lightweight router exposes two entry points:
- - `http://localhost:5173/` – customer-facing storefront
-  - `http://localhost:5173/admin` – admin dashboard for staging projects/pricing
+Visit `http://localhost:5173` to browse the storefront, which now talks directly to Medusa's store APIs
+(`http://localhost:9000/store/*`).
 
-## MedusaJS-style application layer
+## One-command Docker workflow
 
-Because the official Medusa packages are not accessible in this offline environment, the API ships
-with a small framework (`server/src/medusa`) that mirrors the dependency-injection workflow Medusa
-provides. You can interact with it the same way you would use Medusa services:
+`docker-compose.yml` provisions the full stack:
 
-```js
-import { createMedusaApp } from './medusa/index.js';
+- `medusa` – builds `server/` (official packages, Stripe + PayPal plugins enabled)
+- `postgres` – persistent Postgres 15 database
+- `redis` – Redis 7 cache + event bus
+- `client` – builds `client/` and points `VITE_API_BASE_URL` at the Medusa service
 
-const medusa = createMedusaApp();
-const catalog = medusa.resolve('catalogService');
-const cart = medusa.resolve('cartService');
-
-catalog.listProducts();
-cart.createCart([{ productId: 'burner-01', quantity: 1 }]);
-```
-
-### Extending the container
-
-1. Create a new module definition in `server/src/medusa/modules`. Each module exports an object with a
-   `key`, optional `deps`, and a `factory` that receives the Medusa app plus resolved dependencies.
-2. Register the module in `server/src/medusa/index.js` by adding it to the `modules` array passed into
-   `MedusaApp`.
-3. Resolve the module inside your route handlers or other modules with
-   `const shippingService = medusa.resolve('shippingService');`.
-
-Every module behaves like a Medusa service: it can depend on other services, emit events, and encapsulate
-state (our cart service keeps carts in-memory, for example). Swap the seed data inside
-`server/src/data.js` or back the services with a database to evolve this into a full Medusa deployment.
-
-## Running with Docker
-
-You can also boot the full stack with Docker for a reproducible environment. The default compose file
-(`docker-compose.yml`) builds the images defined in `client/Dockerfile` and `server/Dockerfile`, wires
-the containers together on an internal network, and publishes ports `5000` (API) and `5173` (Vite
-client) to your host. Once the stack is up, open `http://localhost:5173/` for the storefront or
-`http://localhost:5173/admin` for the dashboard. The compose file injects the `VITE_API_BASE_URL` and
-`VITE_API_PROXY_TARGET` environment variables so the React storefront automatically talks to the API,
-whether you are running in Docker or locally.
-
-Start or tear down the stack however you prefer:
+Use the helper script or plain Docker commands:
 
 ```bash
-# rebuilds and starts everything (same as docker compose up --build)
+# Build + start every container (CTRL+C to stop)
 scripts/deploy.sh
 
-# run the compose file manually if you want to pass flags
+# Or run Docker Compose manually
 docker compose up --build
 
-# stop the running containers
 docker compose down
 ```
 
-## Project structure
+If you pass Stripe/PayPal env vars into `docker compose up` (e.g. `STRIPE_API_KEY=... docker compose up`),
+they will be injected into the Medusa container automatically.
+
+## Server structure
 
 ```
-nafs/
-├── README.md
-├── server
-│   ├── package.json
-│   └── src
-│       ├── data.js        # Catalog data seed
-│       └── index.js       # Express API with carts + products
-└── client
-    ├── index.html
-    ├── package.json
-    ├── src
-    │   ├── App.jsx
-    │   ├── components     # Header, ProductCard, CartDrawer, etc.
-    │   ├── hooks          # React hooks for fetching data
-    │   ├── main.jsx
-    │   └── styles.css
-    ├── tailwind.config.js
-    └── vite.config.js
+server/
+├─ data/seed.json            # Medusa seed matching the catalog showcased in the UI
+├─ Dockerfile                # Production-ready Medusa image
+├─ medusa-config.js          # Configures Postgres, Redis, Stripe, PayPal
+├─ package.json              # Uses @medusajs/medusa and related plugins
+└─ package-lock.json
 ```
 
-## Extending the demo
+To add more plugins/modules, install them in `server/package.json` and register them inside
+`server/medusa-config.js` as you normally would in a Medusa project.
 
-- Replace the static catalog in `server/src/data.js` with calls to MedusaJS or another Node/PHP API.
-- Persist carts by swapping the in-memory `Map` with MySQL (or any database) or by wiring Medusa's
-  cart service directly.
-- The React storefront uses componentized sections so you can easily integrate checkout flows,
-  product detail pages, or CMS-powered content blocks.
+## Client notes
+
+`client/src/hooks/useStorefrontData.js` now calls `/store/product-categories` and `/store/products`
+directly. The hook normalizes Medusa's payload into the category/product cards used throughout the
+React components and still falls back to bundled JSON if the backend is unreachable.
+
+## Stripe and PayPal wiring
+
+Set these environment variables in either `.env`, your shell session, or through Docker Compose:
+
+- `STRIPE_API_KEY` – live or test secret key
+- `STRIPE_WEBHOOK_SECRET` – webhook secret for `https://<host>/store/hooks/stripe`
+- `PAYPAL_CLIENT_ID` / `PAYPAL_CLIENT_SECRET`
+
+Medusa already exposes the webhook endpoints under `/store/hooks/stripe` and
+`/store/hooks/paypal`, so once the env vars are set you only need to register webhooks in each
+provider's dashboard.
