@@ -2,7 +2,14 @@ import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
-export default function CartDrawer({ open, onClose, items, onCheckout }) {
+export default function CartDrawer({
+  open,
+  onClose,
+  items,
+  onCheckout,
+  checkoutDisabled = false,
+  checkoutProcessing = false
+}) {
   const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
@@ -64,9 +71,11 @@ export default function CartDrawer({ open, onClose, items, onCheckout }) {
                     </div>
                     <button
                       onClick={onCheckout}
-                      className="mt-4 w-full rounded-full bg-brand-dark px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white"
+                      disabled={checkoutDisabled}
+                      className={`mt-4 w-full rounded-full px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white transition
+                        ${checkoutDisabled ? 'bg-brand-dark/40 cursor-not-allowed' : 'bg-brand-dark hover:bg-brand-dark/90'}`}
                     >
-                      Checkout
+                      {checkoutProcessing ? 'Processing…' : 'Checkout'}
                     </button>
                   </div>
                 </div>
