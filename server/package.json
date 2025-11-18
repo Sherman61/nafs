@@ -1,20 +1,21 @@
 {
-  "name": "nafs-api",
+  "name": "nafs-medusa-backend",
   "version": "1.0.0",
-  "description": "Express API for the Nafs ecommerce demo",
-  "type": "module",
-  "main": "src/index.js",
+  "description": "Medusa backend configured for the Nafs live commerce stack",
+  "license": "MIT",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
-    "test": "node --test"
+    "start": "medusa start",
+    "develop": "medusa develop",
+    "seed": "medusa seed --seed-file=./data/seed.json"
   },
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.19.2",
-    "uuid": "^9.0.1"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.3"
+    "@medusajs/cache-redis": "^1.11.0",
+    "@medusajs/event-bus-redis": "^1.11.0",
+    "@medusajs/medusa": "^1.11.0",
+    "dotenv": "^16.4.5",
+    "medusa-payment-paypal": "^9.0.7",
+    "medusa-payment-stripe": "^10.0.4",
+    "pg": "^8.11.5",
+    "redis": "^4.6.13"
   }
 }
