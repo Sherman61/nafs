@@ -17,19 +17,12 @@ const testimonials = [
   }
 ];
 
-const rawApiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? '/api';
-const normalizedApiBaseUrl = rawApiBaseUrl.endsWith('/')
-  ? rawApiBaseUrl.slice(0, -1)
-  : rawApiBaseUrl;
-
 export default function Storefront({ navigate }) {
   const { categories, products, loading, error, filterProductsByCategory } = useStorefrontData();
   const [activeCategory, setActiveCategory] = useState(null);
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [checkoutMessage, setCheckoutMessage] = useState('');
-  const [checkoutError, setCheckoutError] = useState('');
-  const [isCheckoutProcessing, setIsCheckoutProcessing] = useState(false);
 
   const visibleProducts = useMemo(() => filterProductsByCategory(activeCategory), [
     activeCategory,
@@ -49,38 +42,9 @@ export default function Storefront({ navigate }) {
     setIsCartOpen(true);
   };
 
-  const handleCheckout = async () => {
-    if (cartItems.length === 0 || isCheckoutProcessing) return;
-
-    setCheckoutError('');
-    setCheckoutMessage('');
-    setIsCheckoutProcessing(true);
-
-    try {
-      const response = await fetch(`${normalizedApiBaseUrl}/cart`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          items: cartItems.map((item) => ({ productId: item.id, quantity: item.quantity }))
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to stage checkout');
-      }
-
-      const cart = await response.json();
-      setCheckoutMessage(
-        `Checkout staged. Cart ${cart.id.slice(0, 8)} totals $${cart.total.toFixed(
-          2
-        )}. Keep shopping or continue to Stripe when ready.`
-      );
-    } catch (err) {
-      console.error('Checkout failed', err);
-      setCheckoutError('Checkout failed—ensure the API server on port 5000 is running.');
-    } finally {
-      setIsCheckoutProcessing(false);
-    }
+  const handleCheckout = () => {
+    setCheckoutMessage('Thank you! Your ritual kit is being assembled.');
+    setCartItems([]);
   };
 
   return (
@@ -165,14 +129,8 @@ export default function Storefront({ navigate }) {
                 static data for your MedusaJS backend, or connect to a database like MySQL when you’re
                 ready for persistence.
               </p>
-              <p
-                className={`mt-4 text-sm ${
-                  checkoutError ? 'text-red-300' : 'text-white/70'
-                }`}
-              >
-                {checkoutMessage ||
-                  checkoutError ||
-                  'Cart interactions happen client-side for speedier prototyping.'}
+              <p className="mt-4 text-sm text-white/70">
+                {checkoutMessage || 'Cart interactions happen client-side for speedier prototyping.'}
               </p>
             </div>
             <div className="space-y-6">
@@ -201,8 +159,6 @@ export default function Storefront({ navigate }) {
         onClose={() => setIsCartOpen(false)}
         items={cartItems}
         onCheckout={handleCheckout}
-        checkoutDisabled={cartItems.length === 0 || isCheckoutProcessing}
-        checkoutProcessing={isCheckoutProcessing}
       />
     </div>
   );
