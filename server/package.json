@@ -9,13 +9,12 @@
     "seed": "medusa seed --seed-file=./data/seed.json"
   },
   "dependencies": {
-    "@medusajs/cache-redis": "^1.11.0",
-    "@medusajs/event-bus-redis": "^1.11.0",
-    "@medusajs/medusa": "^1.11.0",
+    "@medusajs/medusa": "^2.11.3",
+    "@medusajs/cache-redis": "^2.11.3",
+    "@medusajs/event-bus-redis": "^2.11.3",
+    "@medusajs/payment-stripe": "^2.11.3",
     "dotenv": "^16.4.5",
-    "medusa-payment-paypal": "^9.0.7",
-    "medusa-payment-stripe": "^10.0.4",
-    "pg": "^8.11.5",
-    "redis": "^4.6.13"
+    "redis": "^4.6.13",
+    "pg": "^8.11.5"
   }
 }
