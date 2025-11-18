@@ -1,10 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AdminDashboard from './pages/AdminDashboard.jsx';
+import Checkout from './pages/Checkout.jsx';
+import ProductEdit from './pages/ProductEdit.jsx';
 import Storefront from './pages/Storefront.jsx';
 
 const routes = {
   '/': Storefront,
-  '/admin': AdminDashboard
+  '/admin': AdminDashboard,
+  '/checkout': Checkout,
+  '/admin/products/edit': ProductEdit
 };
 
 const getPathname = () => {
