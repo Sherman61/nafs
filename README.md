@@ -1,10 +1,13 @@
 # nafs medusah commerce demo
 
 This repository contains a small ecommerce experience inspired by the "Medusah" stack the client
-requested: a Node/Express API plus a React (Vite) storefront powered by Tailwind CSS. The setup is
-split into two workspaces:
+requested: a Node/Express API plus a React (Vite) storefront powered by Tailwind CSS. The server now
+boots a lightweight MedusaJS-style application container so that product, category, and cart logic is
+managed through Medusa-like modules rather than ad-hoc Express handlers. The setup is split into two
+workspaces:
 
-- `server/` – Express API that exposes categories, products, and a lightweight in-memory cart.
+- `server/` – Express API powered by a tiny Medusa container that exposes categories, products, and a
+  lightweight in-memory cart service.
 - `client/` – Vite + React storefront that consumes the API and renders a cart-enabled shopping
   experience.
 
@@ -37,8 +40,38 @@ any other provider when you are ready for production.
 4. Visit `http://localhost:5173` to browse the storefront. The client proxies `/api/*` requests to
    the local Node API so you can explore the complete demo without additional configuration. The
    lightweight router exposes two entry points:
-   - `http://localhost:5173/` – customer-facing storefront
-   - `http://localhost:5173/admin` – admin dashboard for staging projects/pricing
+ - `http://localhost:5173/` – customer-facing storefront
+  - `http://localhost:5173/admin` – admin dashboard for staging projects/pricing
+
+## MedusaJS-style application layer
+
+Because the official Medusa packages are not accessible in this offline environment, the API ships
+with a small framework (`server/src/medusa`) that mirrors the dependency-injection workflow Medusa
+provides. You can interact with it the same way you would use Medusa services:
+
+```js
+import { createMedusaApp } from './medusa/index.js';
+
+const medusa = createMedusaApp();
+const catalog = medusa.resolve('catalogService');
+const cart = medusa.resolve('cartService');
+
+catalog.listProducts();
+cart.createCart([{ productId: 'burner-01', quantity: 1 }]);
+```
+
+### Extending the container
+
+1. Create a new module definition in `server/src/medusa/modules`. Each module exports an object with a
+   `key`, optional `deps`, and a `factory` that receives the Medusa app plus resolved dependencies.
+2. Register the module in `server/src/medusa/index.js` by adding it to the `modules` array passed into
+   `MedusaApp`.
+3. Resolve the module inside your route handlers or other modules with
+   `const shippingService = medusa.resolve('shippingService');`.
+
+Every module behaves like a Medusa service: it can depend on other services, emit events, and encapsulate
+state (our cart service keeps carts in-memory, for example). Swap the seed data inside
+`server/src/data.js` or back the services with a database to evolve this into a full Medusa deployment.
 
 ## Running with Docker
 
