@@ -82,6 +82,9 @@ Use the helper script or plain Docker commands:
 # Build + start every container (CTRL+C to stop)
 scripts/deploy.sh
 
+# Give the stack its own docker-compose project name (so you can run multiple copies)
+scripts/deploy.sh --project-name my-live-commerce
+
 # Or run Docker Compose manually
 docker compose up --build
 
@@ -90,6 +93,23 @@ docker compose down
 
 If you pass Stripe/PayPal env vars into `docker compose up` (e.g. `STRIPE_API_KEY=... docker compose up`),
 they will be injected into the Medusa container automatically.
+
+## Copy the stack into a brand new repository
+
+Need this architecture in another folder (or machine) with its own Docker Compose namespace? Use
+`scripts/scaffold_repo.sh` to clone the working tree without Git history:
+
+```bash
+# Creates /opt/commerce-stack, initializes git, and suggests the docker project name "medusa-live"
+scripts/scaffold_repo.sh /opt/commerce-stack --project-name medusa-live
+
+# Overwrite the folder if it already exists and skip git init
+scripts/scaffold_repo.sh ~/temp/nafs-copy --force --no-git
+```
+
+After running the script, change into the new directory, install dependencies inside `server/` and
+`client/`, then bring it online with `scripts/deploy.sh` (use `--project-name` if you passed one
+during scaffolding so the Docker resources don't collide with other stacks on the host).
 
 ## Server structure
 
