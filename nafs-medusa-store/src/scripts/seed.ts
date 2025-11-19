@@ -62,7 +62,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
   const salesChannelModuleService = container.resolve(Modules.SALES_CHANNEL);
   const storeModuleService = container.resolve(Modules.STORE);
 
-  const countries = ["gb", "de", "dk", "se", "fr", "es", "it"];
+  const europeanCountries = ["gb", "de", "dk", "se", "fr", "es", "it"];
+  const usCountries = ["us"];
+
+  const countries = [...europeanCountries, ...usCountries];
 
   logger.info("Seeding store data...");
   const [store] = await storeModuleService.listStores();
@@ -116,13 +119,19 @@ export default async function seedDemoData({ container }: ExecArgs) {
         {
           name: "Europe",
           currency_code: "eur",
-          countries,
+          countries: europeanCountries,
+          payment_providers: ["pp_system_default"],
+        },
+        {
+          name: "United States",
+          currency_code: "usd",
+          countries: usCountries,
           payment_providers: ["pp_system_default"],
         },
       ],
     },
   });
-  const region = regionResult[0];
+  const [europeRegion, usRegion] = regionResult;
   logger.info("Finished seeding regions.");
 
   logger.info("Seeding tax regions...");
@@ -198,39 +207,27 @@ export default async function seedDemoData({ container }: ExecArgs) {
     service_zones: [
       {
         name: "Europe",
-        geo_zones: [
-          {
-            country_code: "gb",
-            type: "country",
-          },
-          {
-            country_code: "de",
-            type: "country",
-          },
-          {
-            country_code: "dk",
-            type: "country",
-          },
-          {
-            country_code: "se",
-            type: "country",
-          },
-          {
-            country_code: "fr",
-            type: "country",
-          },
-          {
-            country_code: "es",
-            type: "country",
-          },
-          {
-            country_code: "it",
-            type: "country",
-          },
-        ],
+        geo_zones: europeanCountries.map((country_code) => ({
+          country_code,
+          type: "country" as const,
+        })),
+      },
+      {
+        name: "United States",
+        geo_zones: usCountries.map((country_code) => ({
+          country_code,
+          type: "country" as const,
+        })),
       },
     ],
   });
+
+  const europeServiceZone = fulfillmentSet.service_zones.find(
+    (zone) => zone.name === "Europe"
+  )!;
+  const usServiceZone = fulfillmentSet.service_zones.find(
+    (zone) => zone.name === "United States"
+  )!;
 
   await link.create({
     [Modules.STOCK_LOCATION]: {
@@ -247,7 +244,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
         name: "Standard Shipping",
         price_type: "flat",
         provider_id: "manual_manual",
-        service_zone_id: fulfillmentSet.service_zones[0].id,
+        service_zone_id: europeServiceZone.id,
         shipping_profile_id: shippingProfile.id,
         type: {
           label: "Standard",
@@ -264,7 +261,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
             amount: 10,
           },
           {
-            region_id: region.id,
+            region_id: europeRegion.id,
             amount: 10,
           },
         ],
@@ -285,7 +282,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
         name: "Express Shipping",
         price_type: "flat",
         provider_id: "manual_manual",
-        service_zone_id: fulfillmentSet.service_zones[0].id,
+        service_zone_id: europeServiceZone.id,
         shipping_profile_id: shippingProfile.id,
         type: {
           label: "Express",
@@ -302,8 +299,84 @@ export default async function seedDemoData({ container }: ExecArgs) {
             amount: 10,
           },
           {
-            region_id: region.id,
+            region_id: europeRegion.id,
             amount: 10,
+          },
+        ],
+        rules: [
+          {
+            attribute: "enabled_in_store",
+            value: "true",
+            operator: "eq",
+          },
+          {
+            attribute: "is_return",
+            value: "false",
+            operator: "eq",
+          },
+        ],
+      },
+      {
+        name: "FedEx Ground (US)",
+        price_type: "flat",
+        provider_id: "manual_manual",
+        service_zone_id: usServiceZone.id,
+        shipping_profile_id: shippingProfile.id,
+        type: {
+          label: "FedEx Ground",
+          description: "US domestic delivery in 3-5 business days.",
+          code: "fedex-ground",
+        },
+        prices: [
+          {
+            currency_code: "usd",
+            amount: 1299,
+          },
+          {
+            currency_code: "eur",
+            amount: 1199,
+          },
+          {
+            region_id: usRegion.id,
+            amount: 1299,
+          },
+        ],
+        rules: [
+          {
+            attribute: "enabled_in_store",
+            value: "true",
+            operator: "eq",
+          },
+          {
+            attribute: "is_return",
+            value: "false",
+            operator: "eq",
+          },
+        ],
+      },
+      {
+        name: "UPS 2nd Day Air (US)",
+        price_type: "flat",
+        provider_id: "manual_manual",
+        service_zone_id: usServiceZone.id,
+        shipping_profile_id: shippingProfile.id,
+        type: {
+          label: "UPS 2nd Day Air",
+          description: "US domestic delivery in 2 business days.",
+          code: "ups-2day",
+        },
+        prices: [
+          {
+            currency_code: "usd",
+            amount: 1799,
+          },
+          {
+            currency_code: "eur",
+            amount: 1599,
+          },
+          {
+            region_id: usRegion.id,
+            amount: 1799,
           },
         ],
         rules: [
