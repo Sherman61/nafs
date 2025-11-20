@@ -30,7 +30,16 @@ export default async function Nav() {
           </div>
 
           <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
-            <div className="hidden small:flex items-center gap-x-6 h-full">
+            <div className="hidden small:flex items-center gap-x-6 h-full text-[#2f4f4f]">
+              <LocalizedClientLink className="hover:text-[#3c7a5e]" href="/store">
+                Store
+              </LocalizedClientLink>
+              <LocalizedClientLink className="hover:text-[#3c7a5e]" href="/about">
+                About
+              </LocalizedClientLink>
+              <LocalizedClientLink className="hover:text-[#3c7a5e]" href="/tip">
+                Tip
+              </LocalizedClientLink>
               <LocalizedClientLink
                 className="hover:text-ahava-forest"
                 href="/about"

@@ -77,6 +77,13 @@ a {
 }
 
 @layer components {
+  body {
+    @apply text-[#1f2f28];
+    background: radial-gradient(circle at 15% 20%, rgba(60, 122, 94, 0.08), transparent 35%),
+      radial-gradient(circle at 85% 10%, rgba(76, 120, 186, 0.08), transparent 30%),
+      linear-gradient(180deg, #f8fbf9 0%, #f5f8f4 60%, #f9f4ec 100%);
+  }
+
   .content-container {
     @apply max-w-[1440px] w-full mx-auto px-6;
   }
