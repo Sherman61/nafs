@@ -10,7 +10,11 @@ export const metadata: Metadata = {
   title: "Checkout",
 }
 
-export default async function Checkout() {
+export default async function Checkout({
+  searchParams,
+}: {
+  searchParams: { step?: string }
+}) {
   const cart = await retrieveCart()
 
   if (!cart) {
@@ -19,10 +23,16 @@ export default async function Checkout() {
 
   const customer = await retrieveCustomer()
 
+  const currentStep = searchParams?.step || "address"
+
   return (
     <div className="grid grid-cols-1 small:grid-cols-[1fr_416px] content-container gap-x-40 py-12">
       <PaymentWrapper cart={cart}>
-        <CheckoutForm cart={cart} customer={customer} />
+        <CheckoutForm
+          cart={cart}
+          customer={customer}
+          currentStep={currentStep}
+        />
       </PaymentWrapper>
       <CheckoutSummary cart={cart} />
     </div>
