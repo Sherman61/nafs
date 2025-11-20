@@ -12,6 +12,8 @@ import { HttpTypes } from "@medusajs/types"
 const SideMenuItems = {
   Home: "/",
   Store: "/store",
+  About: "/about",
+  Tip: "/tip",
   Account: "/account",
   Cart: "/cart",
 }
@@ -78,7 +80,7 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
                         )
                       })}
                     </ul>
-                    <div className="flex flex-col gap-y-6">
+                    <div className="flex flex-col gap-y-6 text-[#dfe9dd]">
                       <div
                         className="flex justify-between"
                         onMouseEnter={toggleState.open}
@@ -98,7 +100,7 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
                         />
                       </div>
                       <Text className="flex justify-between txt-compact-small">
-                        © {new Date().getFullYear()} Medusa Store. All rights
+                        © {new Date().getFullYear()} Lefanek Ahava. All rights
                         reserved.
                       </Text>
                     </div>

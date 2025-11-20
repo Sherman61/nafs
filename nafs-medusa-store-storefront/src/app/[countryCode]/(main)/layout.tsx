@@ -8,6 +8,8 @@ import CartMismatchBanner from "@modules/layout/components/cart-mismatch-banner"
 import Footer from "@modules/layout/templates/footer"
 import Nav from "@modules/layout/templates/nav"
 import FreeShippingPriceNudge from "@modules/shipping/components/free-shipping-price-nudge"
+import ShippingModeBanner from "@modules/layout/components/shipping-mode-banner"
+import { getShippoSettings } from "@lib/data/shippo-settings"
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
@@ -16,6 +18,7 @@ export const metadata: Metadata = {
 export default async function PageLayout(props: { children: React.ReactNode }) {
   const customer = await retrieveCustomer()
   const cart = await retrieveCart()
+  const shippoSettings = await getShippoSettings()
   let shippingOptions: StoreCartShippingOption[] = []
 
   if (cart) {
@@ -27,6 +30,7 @@ export default async function PageLayout(props: { children: React.ReactNode }) {
   return (
     <>
       <Nav />
+      <ShippingModeBanner settings={shippoSettings} />
       {customer && cart && (
         <CartMismatchBanner customer={customer} cart={cart} />
       )}
