@@ -9,6 +9,7 @@ import ErrorMessage from "@modules/checkout/components/error-message"
 import PaymentContainer, {
   StripeCardContainer,
 } from "@modules/checkout/components/payment-container"
+import { isStep, useCheckoutStep } from "@modules/checkout/hooks/use-checkout-step"
 import Divider from "@modules/common/components/divider"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
@@ -16,9 +17,11 @@ import { useCallback, useEffect, useState } from "react"
 const Payment = ({
   cart,
   availablePaymentMethods,
+  currentStep,
 }: {
   cart: any
   availablePaymentMethods: any[]
+  currentStep: string
 }) => {
   const activeSession = cart.payment_collection?.payment_sessions?.find(
     (paymentSession: any) => paymentSession.status === "pending"
@@ -36,7 +39,8 @@ const Payment = ({
   const router = useRouter()
   const pathname = usePathname()
 
-  const isOpen = searchParams.get("step") === "payment"
+  const step = useCheckoutStep(currentStep)
+  const isOpen = isStep(step, "payment")
 
   const setPaymentMethod = async (method: string) => {
     setError(null)
