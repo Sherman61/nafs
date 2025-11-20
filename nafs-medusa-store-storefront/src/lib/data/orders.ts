@@ -63,7 +63,13 @@ export const listOrders = async (
       cache: "force-cache",
     })
     .then(({ orders }) => orders)
-    .catch((err) => medusaError(err))
+    .catch((err) => {
+      if (err?.response?.status === 401) {
+        return []
+      }
+
+      return medusaError(err)
+    })
 }
 
 export const createTransferRequest = async (
