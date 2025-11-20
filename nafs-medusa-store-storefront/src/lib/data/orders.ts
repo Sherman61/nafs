@@ -33,9 +33,15 @@ export const listOrders = async (
   limit: number = 10,
   offset: number = 0,
   filters?: Record<string, any>
-) => {
+): Promise<HttpTypes.StoreOrder[]> => {
+  const authHeaders = await getAuthHeaders()
+
+  if (!("authorization" in authHeaders)) {
+    return []
+  }
+
   const headers = {
-    ...(await getAuthHeaders()),
+    ...authHeaders,
   }
 
   const next = {
