@@ -33,9 +33,15 @@ export const listOrders = async (
   limit: number = 10,
   offset: number = 0,
   filters?: Record<string, any>
-) => {
+): Promise<HttpTypes.StoreOrder[]> => {
+  const authHeaders = await getAuthHeaders()
+
+  if (!("authorization" in authHeaders)) {
+    return []
+  }
+
   const headers = {
-    ...(await getAuthHeaders()),
+    ...authHeaders,
   }
 
   const next = {
@@ -57,7 +63,13 @@ export const listOrders = async (
       cache: "force-cache",
     })
     .then(({ orders }) => orders)
-    .catch((err) => medusaError(err))
+    .catch((err) => {
+      if (err?.response?.status === 401) {
+        return []
+      }
+
+      return medusaError(err)
+    })
 }
 
 export const createTransferRequest = async (
