@@ -11,8 +11,8 @@ export default async function Nav() {
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
-      <header className="relative h-16 mx-auto border-b duration-200 bg-gradient-to-r from-[#f2f7f1] via-white to-[#eef5f1] border-[#dfe9dd] shadow-[0_10px_40px_-28px_rgba(47,79,79,0.45)]">
-        <nav className="content-container txt-xsmall-plus text-ui-fg-subtle flex items-center justify-between w-full h-full text-small-regular">
+      <header className="relative h-16 mx-auto border-b duration-200 bg-ahava-sand/90 backdrop-blur border-ahava-forest/20">
+        <nav className="content-container txt-xsmall-plus text-ahava-ink flex items-center justify-between w-full h-full text-small-regular">
           <div className="flex-1 basis-0 h-full flex items-center">
             <div className="h-full">
               <SideMenu regions={regions} />
@@ -22,8 +22,8 @@ export default async function Nav() {
           <div className="flex items-center h-full">
             <LocalizedClientLink
               href="/"
-              className="txt-compact-xlarge-plus hover:text-[#2f5f4b] uppercase text-[#1f2f28]"
-              data-testid="nav-store-link"
+              className="txt-compact-xlarge-plus hover:text-ahava-forest uppercase tracking-[0.08em]"
+              data-testid="nav-home-link"
             >
               Lefanek Ahava
             </LocalizedClientLink>
@@ -41,7 +41,28 @@ export default async function Nav() {
                 Tip
               </LocalizedClientLink>
               <LocalizedClientLink
-                className="hover:text-[#3c7a5e]"
+                className="hover:text-ahava-forest"
+                href="/about"
+                data-testid="nav-about-link"
+              >
+                About
+              </LocalizedClientLink>
+              <LocalizedClientLink
+                className="hover:text-ahava-forest"
+                href="/store"
+                data-testid="nav-store-link"
+              >
+                Store
+              </LocalizedClientLink>
+              <LocalizedClientLink
+                className="hover:text-ahava-forest"
+                href="/tip"
+                data-testid="nav-tip-link"
+              >
+                Tip
+              </LocalizedClientLink>
+              <LocalizedClientLink
+                className="hover:text-ahava-forest"
                 href="/account"
                 data-testid="nav-account-link"
               >
@@ -51,7 +72,7 @@ export default async function Nav() {
             <Suspense
               fallback={
                 <LocalizedClientLink
-                  className="hover:text-ui-fg-base flex gap-2"
+                  className="hover:text-ahava-forest flex gap-2"
                   href="/cart"
                   data-testid="nav-cart-link"
                 >

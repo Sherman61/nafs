@@ -6,9 +6,9 @@ import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 
 export const metadata: Metadata = {
-  title: "Lefanek Ahava | Love in Action Storefront",
+  title: "Lefanek Ahava | Love lived out",
   description:
-    "Shop mindful goods that fuel unity, generosity, and spiritual connection in the Lefanek Ahava community.",
+    "Discover the Lefanek Ahava store and movement—every purchase fuels connection, kindness, and community care.",
 }
 
 export default async function Home(props: {

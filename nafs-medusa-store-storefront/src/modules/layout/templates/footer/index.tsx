@@ -3,7 +3,6 @@ import { listCollections } from "@lib/data/collections"
 import { Text, clx } from "@medusajs/ui"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import MedusaCTA from "@modules/layout/components/medusa-cta"
 
 export default async function Footer() {
   const { collections } = await listCollections({
@@ -12,24 +11,54 @@ export default async function Footer() {
   const productCategories = await listCategories()
 
   return (
-    <footer className="border-t border-[#dfe9dd] bg-[#f7fbf6] w-full">
+    <footer className="border-t border-ahava-forest/15 bg-white/70 backdrop-blur w-full">
       <div className="content-container flex flex-col w-full">
-        <div className="flex flex-col gap-y-6 xsmall:flex-row items-start justify-between py-32">
-          <div>
+        <div className="flex flex-col gap-y-8 xsmall:flex-row items-start justify-between py-16">
+          <div className="max-w-xl space-y-3">
             <LocalizedClientLink
               href="/"
-              className="txt-compact-xlarge-plus text-[#2f4f4f] hover:text-[#3c7a5e] uppercase"
+              className="txt-compact-xlarge-plus text-ahava-forest hover:text-ahava-ink uppercase"
             >
               Lefanek Ahava
             </LocalizedClientLink>
-            <p className="mt-3 max-w-sm text-[#3c4f45]">
-              Love in motion, community in bloom. Thank you for helping us pass warmth, peace, and joy forward.
-            </p>
+            <Text className="text-ui-fg-subtle">
+              We try making No agenda the Only agenda. Every smile, fruit, and
+              dollar given is a spark of unity, love, and care.
+            </Text>
           </div>
           <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
+            <div className="flex flex-col gap-y-2">
+              <span className="txt-small-plus text-ahava-ink">Discover</span>
+              <ul className="grid grid-cols-1 gap-2 text-ui-fg-subtle txt-small">
+                <li>
+                  <LocalizedClientLink
+                    className="hover:text-ahava-forest"
+                    href="/about"
+                  >
+                    About the movement
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink
+                    className="hover:text-ahava-forest"
+                    href="/store"
+                  >
+                    Store
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink
+                    className="hover:text-ahava-forest"
+                    href="/tip"
+                  >
+                    Tip & generosity
+                  </LocalizedClientLink>
+                </li>
+              </ul>
+            </div>
             {productCategories && productCategories?.length > 0 && (
               <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
+                <span className="txt-small-plus text-ahava-ink">
                   Categories
                 </span>
                 <ul
@@ -55,7 +84,7 @@ export default async function Footer() {
                       >
                         <LocalizedClientLink
                           className={clx(
-                            "hover:text-ui-fg-base",
+                            "hover:text-ahava-forest",
                             children && "txt-small-plus"
                           )}
                           href={`/categories/${c.handle}`}
@@ -69,7 +98,7 @@ export default async function Footer() {
                               children.map((child) => (
                                 <li key={child.id}>
                                   <LocalizedClientLink
-                                    className="hover:text-ui-fg-base"
+                                    className="hover:text-ahava-forest"
                                     href={`/categories/${child.handle}`}
                                     data-testid="category-link"
                                   >
@@ -87,7 +116,7 @@ export default async function Footer() {
             )}
             {collections && collections.length > 0 && (
               <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
+                <span className="txt-small-plus text-ahava-ink">
                   Collections
                 </span>
                 <ul
@@ -101,7 +130,7 @@ export default async function Footer() {
                   {collections?.slice(0, 6).map((c) => (
                     <li key={c.id}>
                       <LocalizedClientLink
-                        className="hover:text-ui-fg-base"
+                        className="hover:text-ahava-forest"
                         href={`/collections/${c.handle}`}
                       >
                         {c.title}
@@ -111,33 +140,16 @@ export default async function Footer() {
                 </ul>
               </div>
             )}
-            <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus text-[#2f4f4f]">Lefanek Ahava</span>
-              <ul className="grid grid-cols-1 gap-y-2 text-[#3c4f45] txt-small">
-                <li>
-                  <LocalizedClientLink className="hover:text-[#3c7a5e]" href="/about">
-                    About
-                  </LocalizedClientLink>
-                </li>
-                <li>
-                  <LocalizedClientLink className="hover:text-[#3c7a5e]" href="/tip">
-                    Tip
-                  </LocalizedClientLink>
-                </li>
-                <li>
-                  <LocalizedClientLink className="hover:text-[#3c7a5e]" href="/store">
-                    Shop
-                  </LocalizedClientLink>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
-        <div className="flex w-full mb-16 justify-between text-[#4b5f59]">
+        <div className="flex w-full mb-8 justify-between text-ui-fg-muted">
           <Text className="txt-compact-small">
-            © {new Date().getFullYear()} Lefanek Ahava. All rights reserved.
+            © {new Date().getFullYear()} Lefanek Ahava. Born from love, built for
+            community.
           </Text>
-          <MedusaCTA />
+          <Text className="txt-compact-small text-ahava-forest">
+            Keep paying it forward.
+          </Text>
         </div>
       </div>
     </footer>
