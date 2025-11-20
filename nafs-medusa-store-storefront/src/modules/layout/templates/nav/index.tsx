@@ -37,23 +37,9 @@ export default async function Nav() {
               <LocalizedClientLink className="hover:text-[#3c7a5e]" href="/about">
                 About
               </LocalizedClientLink>
-              <LocalizedClientLink className="hover:text-[#3c7a5e]" href="/tip">
-                Tip
-              </LocalizedClientLink>
-              <LocalizedClientLink
-                className="hover:text-ahava-forest"
-                href="/about"
-                data-testid="nav-about-link"
-              >
-                About
-              </LocalizedClientLink>
-              <LocalizedClientLink
-                className="hover:text-ahava-forest"
-                href="/store"
-                data-testid="nav-store-link"
-              >
-                Store
-              </LocalizedClientLink>
+
+
+
               <LocalizedClientLink
                 className="hover:text-ahava-forest"
                 href="/tip"
