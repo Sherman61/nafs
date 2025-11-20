@@ -964,7 +964,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
   for (const inventoryItem of inventoryItems) {
     const inventoryLevel = {
       location_id: stockLocation.id,
-      stocked_quantity: 1000000,
+      stocked_quantity: 10000,
       inventory_item_id: inventoryItem.id,
     };
     inventoryLevels.push(inventoryLevel);
