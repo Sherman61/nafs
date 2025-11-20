@@ -4,8 +4,9 @@ import { SortOptions } from "@modules/store/components/refinement-list/sort-prod
 import StoreTemplate from "@modules/store/templates"
 
 export const metadata: Metadata = {
-  title: "Store",
-  description: "Explore all of our products.",
+  title: "Lefanek Ahava Store",
+  description:
+    "Explore thoughtful goods that carry the Lefanek Ahava spirit of unity, love, and generosity.",
 }
 
 type Params = {
@@ -19,8 +20,8 @@ type Params = {
 }
 
 export default async function StorePage(props: Params) {
-  const params = await props.params;
-  const searchParams = await props.searchParams;
+  const params = await props.params
+  const searchParams = await props.searchParams
   const { sortBy, page } = searchParams
 
   return (
