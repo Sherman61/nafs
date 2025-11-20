@@ -12,15 +12,15 @@ module.exports = {
   ],
   theme: {
     extend: {
-      transitionProperty: {
-        width: "width margin",
-        height: "height",
-        bg: "background-color",
-        display: "display opacity",
-        visibility: "visibility",
-        padding: "padding-top padding-right padding-bottom padding-left",
-      },
       colors: {
+        ahava: {
+          forest: "#1f3b2c",
+          fern: "#2f6f49",
+          sand: "#f4efe6",
+          blush: "#e6d9c9",
+          gold: "#c19b63",
+          ink: "#1d1b16",
+        },
         grey: {
           0: "#FFFFFF",
           5: "#F9FAFB",
@@ -34,6 +34,14 @@ module.exports = {
           80: "#1F2937",
           90: "#111827",
         },
+      },
+      transitionProperty: {
+        width: "width margin",
+        height: "height",
+        bg: "background-color",
+        display: "display opacity",
+        visibility: "visibility",
+        padding: "padding-top padding-right padding-bottom padding-left",
       },
       borderRadius: {
         none: "0px",
