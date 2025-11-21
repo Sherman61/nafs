@@ -4,6 +4,7 @@ const navigation = [
   { name: 'Collections', href: '#collections' },
   { name: 'Bestsellers', href: '#bestsellers' },
   { name: 'Journal', href: '#journal' },
+  { name: 'Customer service', href: '/customer-service' },
   { name: 'Checkout', href: '/checkout' },
   { name: 'Admin', href: '/admin' }
 ];
