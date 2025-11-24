@@ -1,0 +1,1 @@
+create a dir in the ./routes eg /apple and in there create a page eg page.tsx and that page will be vissable by the url http://localhost:9000/app/apple
