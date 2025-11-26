@@ -129,32 +129,28 @@ const Shipping: React.FC<ShippingProps> = ({
       setShowPickupOptions(PICKUP_OPTION_OFF)
     }
 
-    let currentId: string | null = null
+    const previousId = shippingMethodId
+
     setIsLoading(true)
-    setShippingMethodId((prev) => {
-      currentId = prev
-      return id
-    })
+    setShippingMethodId(id)
 
-    await setShippingMethod({ cartId: cart.id, shippingMethodId: id })
-      .then(async () => {
-        await logInteraction({
-          type: "shippo",
-          action: `shipping_selected:${variant}`,
-          cart_id: cart.id,
-          metadata: {
-            shipping_option_id: id,
-          },
-        })
-      })
-      .catch((err) => {
-        setShippingMethodId(currentId)
+    try {
+      await setShippingMethod({ cartId: cart.id, shippingMethodId: id })
 
-        setError(err.message)
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
+      void logInteraction({
+        type: "shippo",
+        action: `shipping_selected:${variant}`,
+        cart_id: cart.id,
+        metadata: {
+          shipping_option_id: id,
+        },
+      }).catch(console.error)
+    } catch (err: any) {
+      setShippingMethodId(previousId)
+      setError(err.message)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
