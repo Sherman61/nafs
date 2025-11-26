@@ -1,6 +1,9 @@
 "use client"
 
 import { useState, useTransition } from "react"
+
+
+
 import { Button, Container, Heading, StatusBadge, Text } from "@medusajs/ui"
 import { CheckCircleSolid, RefreshCw } from "@medusajs/icons"
 
@@ -94,8 +97,10 @@ const FlowPlanner = ({ snapshot }: FlowPlannerProps) => {
               <CheckCircleSolid /> Delivery + Payment in sync
             </span>
             <span className="inline-flex items-center gap-1">
-              <RefreshCw className="h-4 w-4" /> Changes auto-refresh checkout
+              {/* <RefreshCw className="h-4 w-4" /> */}
+              Changes auto-refresh checkout
             </span>
+
           </div>
         </Container>
 
@@ -110,11 +115,10 @@ const FlowPlanner = ({ snapshot }: FlowPlannerProps) => {
                 <button
                   key={option.id}
                   onClick={() => handleShippingSelection(option.id)}
-                  className={`text-left rounded-lg border p-4 transition-all duration-150 hover:shadow-borders-interactive-with-active ${
-                    isSelected
-                      ? "border-ui-border-interactive bg-ui-bg-subtle"
-                      : "border-ui-border-base"
-                  }`}
+                  className={`text-left rounded-lg border p-4 transition-all duration-150 hover:shadow-borders-interactive-with-active ${isSelected
+                    ? "border-ui-border-interactive bg-ui-bg-subtle"
+                    : "border-ui-border-base"
+                    }`}
                   disabled={isPending}
                 >
                   <div className="flex items-center justify-between gap-2">
@@ -149,11 +153,10 @@ const FlowPlanner = ({ snapshot }: FlowPlannerProps) => {
                 <button
                   key={provider.id}
                   onClick={() => handlePaymentSelection(provider.id)}
-                  className={`text-left rounded-lg border p-4 transition-all duration-150 hover:shadow-borders-interactive-with-active ${
-                    isSelected
-                      ? "border-ui-border-interactive bg-ui-bg-subtle"
-                      : "border-ui-border-base"
-                  }`}
+                  className={`text-left rounded-lg border p-4 transition-all duration-150 hover:shadow-borders-interactive-with-active ${isSelected
+                    ? "border-ui-border-interactive bg-ui-bg-subtle"
+                    : "border-ui-border-base"
+                    }`}
                   disabled={isPending}
                 >
                   <div className="flex items-center justify-between gap-3">

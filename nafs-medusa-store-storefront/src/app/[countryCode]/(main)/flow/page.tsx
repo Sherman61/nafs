@@ -1,4 +1,5 @@
 import { Metadata } from "next"
+import { CheckCircleSolid, Reload } from "@medusajs/icons"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import FlowPlanner from "@modules/flow/components/flow-planner"
@@ -41,6 +42,8 @@ const FlowPage = async ({ params }: Params) => {
         <LocalizedClientLink href="/checkout?step=address">
           <span className="underline hover:text-ui-fg-base transition-colors">
             Jump to checkout
+            {/* <Reload className="h-4 w-4" /> */}
+
           </span>
         </LocalizedClientLink>
         <span aria-hidden>•</span>

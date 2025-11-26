@@ -1,18 +1,19 @@
-// src/admin/widgets/shippo-rate-estimator.jsx
-import { useEffect, useState } from "react"
-import { defineWidgetConfig } from "@medusajs/admin-sdk"
+// src/admin/components/shippo-rate-estimator.tsx
+import React, { useEffect, useState } from "react"
 import { Button, Container, Heading, Input, Text, toast } from "@medusajs/ui"
 
-const ShippoRateEstimator = () => {
+declare const __BACKEND_URL__: string | undefined
+
+const ShippoRateEstimator: React.FC = () => {
+    // Dev-only component – don’t render in production
     if (!import.meta.env.DEV) {
-        // dev tool only – hide in prod
         return null
     }
 
     const [loadingInit, setLoadingInit] = useState(true)
     const [isEstimating, setIsEstimating] = useState(false)
 
-    const [fromAddress, setFromAddress] = useState(null)
+    const [fromAddress, setFromAddress] = useState<any | null>(null)
     const [toAddress, setToAddress] = useState({
         name: "",
         street1: "",
@@ -22,7 +23,7 @@ const ShippoRateEstimator = () => {
         country: "US",
     })
 
-    const [products, setProducts] = useState([])
+    const [products, setProducts] = useState<any[]>([])
     const [selectedProductId, setSelectedProductId] = useState("")
     const [parcel, setParcel] = useState({
         length: "10",
@@ -33,43 +34,63 @@ const ShippoRateEstimator = () => {
         massUnit: "lb",
     })
 
-    const [rates, setRates] = useState([])
+    const [rates, setRates] = useState<any[]>([])
+
+    // Backend URL resolution:
+    // 1) __BACKEND_URL__ (if injected by Medusa admin plugin)
+    // 2) VITE_BACKEND_URL
+    // 3) window.location.origin as last resort
 
     const backendUrl =
-        typeof __BACKEND_URL__ !== "undefined"
-            ? __BACKEND_URL__
-            : import.meta.env.VITE_BACKEND_URL || ""
+        import.meta.env.VITE_BACKEND_URL ||
+        (typeof window !== "undefined" ? window.location.origin : "")
 
     // Initial load: warehouse "from" address + products
     useEffect(() => {
         const load = async () => {
             try {
                 if (!backendUrl) {
-                    throw new Error("Backend URL is not configured for admin.")
+                    throw new Error(
+                        "Backend URL is not configured (VITE_BACKEND_URL or __BACKEND_URL__ missing)."
+                    )
                 }
 
-                const [configRes, productsRes] = await Promise.all([
-                    fetch(`${backendUrl}/admin/dev/shippo-config`, {
-                        credentials: "include",
-                    }),
-                    fetch(`${backendUrl}/admin/products?limit=50`, {
-                        credentials: "include",
-                    }),
-                ])
+                // 1) Load Shippo config (from-address)
+                const configRes = await fetch(`${backendUrl}/admin/dev/shippo-config`, {
+                    credentials: "include",
+                })
 
                 if (!configRes.ok) {
-                    throw new Error("Failed to load Shippo config")
+                    const txt = await configRes.text()
+                    throw new Error(
+                        `Failed to load Shippo config (status ${configRes.status}): ${txt || "no body"}`
+                    )
                 }
-                const configJson = await configRes.json()
 
+                const configJson = await configRes.json()
                 setFromAddress(configJson.from_address || null)
 
-                if (productsRes.ok) {
+                // 2) Load products (optional, just for dropdown)
+                const productsRes = await fetch(`${backendUrl}/admin/products?limit=50`, {
+                    credentials: "include",
+                })
+
+                if (!productsRes.ok) {
+                    const txt = await productsRes.text()
+                    console.error(
+                        "[Shippo estimator] /admin/products failed",
+                        productsRes.status,
+                        txt
+                    )
+                    toast.error("Failed to load products", {
+                        description: `Admin /products returned ${productsRes.status}`,
+                    })
+                } else {
                     const prodJson = await productsRes.json()
                     setProducts(prodJson.products || [])
                 }
-            } catch (e) {
-                toast.error("Failed to initialize Shippo widget", {
+            } catch (e: any) {
+                toast.error("Failed to initialize Shippo estimator", {
                     description: e?.message || "Check backend dev routes and config.",
                 })
             } finally {
@@ -80,14 +101,17 @@ const ShippoRateEstimator = () => {
         load()
     }, [backendUrl])
 
-    const handleParcelChange = (field, value) => {
+    const handleParcelChange = (field: keyof typeof parcel, value: string) => {
         setParcel((prev) => ({
             ...prev,
             [field]: value,
         }))
     }
 
-    const handleToAddressChange = (field, value) => {
+    const handleToAddressChange = (
+        field: keyof typeof toAddress,
+        value: string
+    ) => {
         setToAddress((prev) => ({
             ...prev,
             [field]: value,
@@ -100,7 +124,7 @@ const ShippoRateEstimator = () => {
 
         try {
             if (!backendUrl) {
-                throw new Error("Backend URL is not configured for admin.")
+                throw new Error("Backend URL is not configured.")
             }
 
             if (!fromAddress) {
@@ -125,19 +149,21 @@ const ShippoRateEstimator = () => {
                 }),
             })
 
-            const data = await res.json()
+            const data = await res.json().catch(() => ({}))
 
             if (!res.ok) {
-                throw new Error(data.message || "Failed to fetch rates from Shippo")
+                throw new Error(
+                    data.message || `Failed to fetch rates from Shippo (status ${res.status})`
+                )
             }
 
             setRates(data.rates || [])
             toast.success("Shippo rates loaded", {
                 description: `Found ${data.rates?.length || 0} rates`,
             })
-        } catch (e) {
+        } catch (e: any) {
             toast.error("Shippo rate estimation failed", {
-                description: e?.message || "Check Shippo token and dev route.",
+                description: e?.message || "Check Shippo token and /admin/dev/shippo-rates.",
             })
         } finally {
             setIsEstimating(false)
@@ -147,7 +173,9 @@ const ShippoRateEstimator = () => {
     if (loadingInit) {
         return (
             <Container className="p-6">
-                <Text className="text-sm text-ui-fg-subtle">Loading Shippo settings…</Text>
+                <Text className="text-sm text-ui-fg-subtle">
+                    Loading Shippo settings…
+                </Text>
             </Container>
         )
     }
@@ -177,8 +205,8 @@ const ShippoRateEstimator = () => {
                     </div>
                 ) : (
                     <Text className="text-xs text-ui-fg-error">
-                        No from-address configured. Implement <code>/admin/dev/shippo-config</code>{" "}
-                        to return your warehouse address.
+                        No from-address configured. Backend must implement{" "}
+                        <code>/admin/dev/shippo-config</code> and return <code>from_address</code>.
                     </Text>
                 )}
             </div>
@@ -255,7 +283,7 @@ const ShippoRateEstimator = () => {
                 </Text>
             </div>
 
-            {/* Parcel dimensions */}
+            {/* Parcel */}
             <div className="space-y-2">
                 <Text className="text-xs text-ui-fg-muted uppercase">Parcel</Text>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
@@ -290,7 +318,9 @@ const ShippoRateEstimator = () => {
                         <Text className="text-[11px] text-ui-fg-muted">Distance unit</Text>
                         <Input
                             value={parcel.distanceUnit}
-                            onChange={(e) => handleParcelChange("distanceUnit", e.target.value)}
+                            onChange={(e) =>
+                                handleParcelChange("distanceUnit", e.target.value)
+                            }
                         />
                     </div>
                 </div>
@@ -310,12 +340,15 @@ const ShippoRateEstimator = () => {
                         <Text className="text-[11px] text-ui-fg-muted">Mass unit</Text>
                         <Input
                             value={parcel.massUnit}
-                            onChange={(e) => handleParcelChange("massUnit", e.target.value)}
+                            onChange={(e) =>
+                                handleParcelChange("massUnit", e.target.value)
+                            }
                         />
                     </div>
                 </div>
             </div>
 
+            {/* Action */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                 <Button
                     className="w-full sm:w-auto"
@@ -359,15 +392,12 @@ const ShippoRateEstimator = () => {
             )}
 
             <Text className="text-[11px] text-ui-fg-muted">
-                This widget calls your backend at <code>/admin/dev/shippo-rates</code> which should
-                talk to Shippo using your sandbox token.
+                This component calls your backend at <code>/admin/dev/shippo-config</code> to load
+                the warehouse and <code>/admin/dev/shippo-rates</code> to fetch rates. If products
+                don’t appear, check <code>/admin/products?limit=50</code> in your backend.
             </Text>
         </Container>
     )
 }
-
-export const config = defineWidgetConfig({
-    zone: "store.details.after",
-})
 
 export default ShippoRateEstimator

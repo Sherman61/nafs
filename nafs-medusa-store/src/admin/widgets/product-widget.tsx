@@ -4,7 +4,7 @@ import { defineWidgetConfig } from "@medusajs/admin-sdk"
 const ProductWidget = () => {
     return (
         <div>
-            <h2>Product Widget</h2>
+            <h2>Product Widget added from src/admin/widgets/product-widget</h2>
         </div>
     )
 }
