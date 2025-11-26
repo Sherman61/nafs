@@ -2,6 +2,7 @@
 
 import { Radio, RadioGroup } from "@headlessui/react"
 import { setShippingMethod } from "@lib/data/cart"
+import { logInteraction } from "@lib/data/interactions"
 import { calculatePriceForShippingOption } from "@lib/data/fulfillment"
 import { convertToLocale } from "@lib/util/money"
 import { CheckCircleSolid, Loader } from "@medusajs/icons"
@@ -136,6 +137,16 @@ const Shipping: React.FC<ShippingProps> = ({
     })
 
     await setShippingMethod({ cartId: cart.id, shippingMethodId: id })
+      .then(async () => {
+        await logInteraction({
+          type: "shippo",
+          action: `shipping_selected:${variant}`,
+          cart_id: cart.id,
+          metadata: {
+            shipping_option_id: id,
+          },
+        })
+      })
       .catch((err) => {
         setShippingMethodId(currentId)
 
