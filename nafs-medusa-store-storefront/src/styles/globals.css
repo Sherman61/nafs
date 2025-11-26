@@ -10,11 +10,23 @@
     "Segoe UI", sans-serif;
 }
 
+:root[data-mode="dark"] {
+  color: #f6f1e9;
+  background-color: #0b0f0d;
+}
+
 body {
   background: radial-gradient(circle at 15% 20%, #e6d9c9 0, transparent 35%),
     radial-gradient(circle at 80% 0%, #c19b6333 0, transparent 30%),
     linear-gradient(180deg, #f4efe6 0%, #ffffff 60%, #f4efe6 100%);
   color: #1d1b16;
+}
+
+[data-mode="dark"] body {
+  background: radial-gradient(circle at 20% 15%, rgba(47, 111, 73, 0.15) 0, transparent 35%),
+    radial-gradient(circle at 80% 5%, rgba(193, 155, 99, 0.18) 0, transparent 30%),
+    linear-gradient(180deg, #0f1613 0%, #0b0f0d 70%, #0f1613 100%);
+  color: #f6f1e9;
 }
 
 h1,
@@ -27,6 +39,18 @@ h4 {
 
 a {
   color: #2f6f49;
+}
+
+[data-mode="dark"] a {
+  color: #9ed1b0;
+}
+
+[data-mode="dark"] .bg-white {
+  background-color: #0f1613;
+}
+
+[data-mode="dark"] .text-ahava-ink {
+  color: #f6f1e9;
 }
 
 @layer utilities {
