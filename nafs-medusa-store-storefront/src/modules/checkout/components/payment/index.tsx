@@ -3,6 +3,7 @@
 import { RadioGroup } from "@headlessui/react"
 import { isStripeLike, paymentInfoMap } from "@lib/constants"
 import { initiatePaymentSession } from "@lib/data/cart"
+import { logInteraction } from "@lib/data/interactions"
 import { CheckCircleSolid, CreditCard } from "@medusajs/icons"
 import { Button, Container, Heading, Text, clx } from "@medusajs/ui"
 import ErrorMessage from "@modules/checkout/components/error-message"
@@ -50,6 +51,13 @@ const Payment = ({
         provider_id: method,
       })
     }
+
+    await logInteraction({
+      type: "stripe",
+      action: `payment_method_selected:${method}`,
+      cart_id: cart.id,
+      customer_id: cart.customer_id,
+    })
   }
 
   const paidByGiftcard =
@@ -90,6 +98,13 @@ const Payment = ({
       }
 
       if (!shouldInputCard) {
+        await logInteraction({
+          type: "stripe",
+          action: `payment_ready:${selectedPaymentMethod}`,
+          cart_id: cart.id,
+          customer_id: cart.customer_id,
+        })
+
         return router.push(
           pathname + "?" + createQueryString("step", "review"),
           {

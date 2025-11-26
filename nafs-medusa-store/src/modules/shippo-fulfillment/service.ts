@@ -26,16 +26,114 @@ class ShippoFulfillmentProvider {
      * For now, we expose a single generic "Shippo Standard" option.
      */
     async getFulfillmentOptions() {
-        return [
+        const token =
+            this.options.apiToken ||
+            process.env.SHIPPO_SANDBOX_API_KEY ||
+            process.env.SHIPPO_API_TOKEN
+
+        // Fallback options so you always see Shippo in the Shipping Provider dropdown
+        const fallbackOptions = [
             {
                 id: "shippo_standard",
                 name: "Shippo Standard",
-                // `data` is opaque to Medusa; you can stash service-level config here
                 data: {
                     service_level_token: "standard",
+                    carrier: "Shippo",
+                },
+            },
+            {
+                id: "shippo_express",
+                name: "Shippo Express",
+                data: {
+                    service_level_token: "express",
+                    carrier: "Shippo",
+                },
+            },
+            {
+                id: "shippo_overnight",
+                name: "Shippo Overnight",
+                data: {
+                    service_level_token: "overnight",
+                    carrier: "Shippo",
                 },
             },
         ]
+
+        // Try to fetch real service levels from Shippo so the admin UI can list them by carrier
+        if (!token) {
+            return fallbackOptions
+        }
+
+        try {
+            const res = await fetch(
+                "https://api.goshippo.com/metadata/service_levels/",
+                {
+                    headers: {
+                        Authorization: `ShippoToken ${token}`,
+                    },
+                }
+            )
+
+            const json = await res.json()
+
+            if (!res.ok) {
+                throw new Error(
+                    json?.detail ||
+                        `Shippo service levels request failed (${res.status})`
+                )
+            }
+
+            const carriers = Array.isArray(json?.results) ? json.results : json
+
+            const dynamicOptions = (carriers || [])
+                .flatMap((carrier: any) => {
+                    const carrierName =
+                        carrier?.carrier ||
+                        carrier?.provider ||
+                        carrier?.name ||
+                        "Shippo"
+
+                    const services =
+                        carrier?.service_levels || carrier?.services || []
+
+                    return services.map((svc: any) => {
+                        const token =
+                            svc?.token ||
+                            svc?.servicelevel_token ||
+                            svc?.name ||
+                            "standard"
+
+                        const id = `shippo_${carrierName
+                            .toString()
+                            .toLowerCase()
+                            .replace(/[^a-z0-9]+/g, "_")}_${token
+                            .toString()
+                            .toLowerCase()
+                            .replace(/[^a-z0-9]+/g, "_")}`
+
+                        return {
+                            id,
+                            name: `${carrierName} - ${
+                                svc?.name || svc?.readable || token
+                            }`,
+                            data: {
+                                carrier: carrierName,
+                                service_level_token: token,
+                                estimated_days: svc?.estimated_days,
+                            },
+                        }
+                    })
+                })
+                .filter(Boolean)
+
+            if (dynamicOptions.length) {
+                return dynamicOptions
+            }
+        } catch (err) {
+            console.error("[shippo] Failed to load service levels", err)
+        }
+
+        return fallbackOptions
     }
 
     /**
