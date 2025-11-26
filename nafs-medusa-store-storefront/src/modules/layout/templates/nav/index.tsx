@@ -5,14 +5,15 @@ import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
+import { ThemeSwitcher } from "@modules/layout/components/theme-switcher"
 
 export default async function Nav() {
   const regions = await listRegions().then((regions: StoreRegion[]) => regions)
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
-      <header className="relative h-16 mx-auto border-b duration-200 bg-ahava-sand/90 backdrop-blur border-ahava-forest/20">
-        <nav className="content-container txt-xsmall-plus text-ahava-ink flex items-center justify-between w-full h-full text-small-regular">
+      <header className="relative h-16 mx-auto border-b duration-200 bg-ahava-sand/90 backdrop-blur border-ahava-forest/20 dark:bg-[#0f1613]/90 dark:border-white/10">
+        <nav className="content-container txt-xsmall-plus text-ahava-ink flex items-center justify-between w-full h-full text-small-regular dark:text-white">
           <div className="flex-1 basis-0 h-full flex items-center">
             <div className="h-full">
               <SideMenu regions={regions} />
@@ -37,9 +38,9 @@ export default async function Nav() {
               <LocalizedClientLink className="hover:text-[#3c7a5e]" href="/about">
                 About
               </LocalizedClientLink>
-
-
-
+              <LocalizedClientLink className="hover:text-[#3c7a5e]" href="/links">
+                Links
+              </LocalizedClientLink>
               <LocalizedClientLink
                 className="hover:text-ahava-forest"
                 href="/tip"
@@ -68,6 +69,9 @@ export default async function Nav() {
             >
               <CartButton />
             </Suspense>
+            <div className="hidden small:flex h-full items-center pl-4 border-l border-ahava-forest/10 dark:border-white/10">
+              <ThemeSwitcher />
+            </div>
           </div>
         </nav>
       </header>
