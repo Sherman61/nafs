@@ -62,6 +62,9 @@ export const listProducts = async ({
           limit,
           offset,
           region_id: region?.id,
+          sales_channel_id:
+            (region?.metadata as { sales_channel_id?: string } | undefined)
+              ?.sales_channel_id || process.env.NEXT_PUBLIC_SALES_CHANNEL_ID,
           fields:
             "*variants.calculated_price,+variants.inventory_quantity,*variants.images,+metadata,+tags,",
           ...queryParams,
