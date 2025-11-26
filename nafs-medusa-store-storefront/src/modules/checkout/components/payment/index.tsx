@@ -98,12 +98,12 @@ const Payment = ({
       }
 
       if (!shouldInputCard) {
-        await logInteraction({
+        void logInteraction({
           type: "stripe",
           action: `payment_ready:${selectedPaymentMethod}`,
           cart_id: cart.id,
           customer_id: cart.customer_id,
-        })
+        }).catch(console.error)
 
         return router.push(
           pathname + "?" + createQueryString("step", "review"),
