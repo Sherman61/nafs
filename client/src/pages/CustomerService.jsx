@@ -1,12 +1,11 @@
 import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/24/outline';
-import { withBasePath } from '../utils/routing.js';
 
 const supportChannels = [
   {
     title: 'Email support',
     description: 'Get a response within one business day from our small team in Brooklyn.',
     icon: EnvelopeIcon,
-    action: 'support@shiyas-blog.com'
+    action: 'support@lefanek-ahava.com'
   },
   {
     title: 'Call or text',
@@ -39,7 +38,7 @@ export default function CustomerService({ navigate }) {
     if (navigate) {
       navigate(path);
     } else if (typeof window !== 'undefined') {
-      window.location.href = withBasePath(path);
+      window.location.href = path;
     }
   };
 
@@ -51,8 +50,8 @@ export default function CustomerService({ navigate }) {
             <p className="text-sm uppercase tracking-[0.3em] text-brand-dark/60">Support</p>
             <h1 className="text-4xl font-display">Customer service hub</h1>
             <p className="mt-2 max-w-2xl text-brand-dark/70">
-              Reach the Shiya's Blog team, review policies, and see where to connect your own shipping and
-              payment providers in the app.
+              Reach the Lefanek Ahava team, review policies, and see where to connect your own shipping
+              and payment providers in the app.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">

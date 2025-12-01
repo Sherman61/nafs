@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import ProductCard from '../components/ProductCard.jsx';
 import { useStorefrontData } from '../hooks/useStorefrontData.js';
-import { withBasePath } from '../utils/routing.js';
 
 const defaultForm = {
   name: '',
@@ -69,7 +68,7 @@ export default function ProductEdit({ navigate }) {
     if (navigate) {
       navigate(path);
     } else if (typeof window !== 'undefined') {
-      window.location.href = withBasePath(path);
+      window.location.href = path;
     }
   };
 
@@ -81,8 +80,8 @@ export default function ProductEdit({ navigate }) {
             <p className="text-sm uppercase tracking-[0.3em] text-brand-dark/60">Admin</p>
             <h1 className="text-4xl font-display">Edit catalog product</h1>
             <p className="mt-2 text-brand-dark/70">
-              Mirror how a Shiya's Blog admin workflow might look when tweaking pricing, imagery, or copy for tees
-              and tallit-inspired layers.
+              Mirror how a Lefanek Ahava admin workflow might look when tweaking pricing, imagery, or copy for
+              tees and tallit-inspired layers.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">

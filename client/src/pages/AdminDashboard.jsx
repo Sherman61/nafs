@@ -4,9 +4,8 @@ import {
   getLaunchMetrics,
   isValidProjectForm
 } from '../utils/projectUtils.js';
-import { withBasePath } from '../utils/routing.js';
 
-const STORAGE_KEY = 'shiyas-blog-admin-projects';
+const STORAGE_KEY = 'lefanek-ahava-admin-projects';
 const defaultForm = {
   name: '',
   price: '',
@@ -66,7 +65,7 @@ export default function AdminDashboard({ navigate }) {
     setFormData(defaultForm);
     setFeedback({
       type: 'success',
-      message: "Project staged locally. Connect the API to persist it in your Shiya's Blog store."
+      message: 'Project staged locally. Connect the API to persist it in your Lefanek Ahava store.'
     });
   };
 
@@ -76,7 +75,7 @@ export default function AdminDashboard({ navigate }) {
         <header className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.3em] text-brand-dark/60">Admin</p>
-            <h1 className="text-4xl font-display">Shiya's Blog launch control</h1>
+            <h1 className="text-4xl font-display">Lefanek Ahava launch control</h1>
             <p className="mt-2 text-brand-dark/70">
               Stage new tees, wraps, and accessories before you sync the updates with your production backend.
             </p>
@@ -84,16 +83,14 @@ export default function AdminDashboard({ navigate }) {
           <div className="flex flex-wrap gap-3">
             <button
               type="button"
-              onClick={() =>
-                navigate ? navigate('/admin/products/edit') : (window.location.href = withBasePath('/admin/products/edit'))
-              }
+              onClick={() => (navigate ? navigate('/admin/products/edit') : (window.location.href = '/admin/products/edit'))}
               className="inline-flex items-center justify-center rounded-full border border-brand-dark/20 px-5 py-2 text-sm font-semibold text-brand-dark"
             >
               ✏️ Edit catalog
             </button>
             <button
               type="button"
-              onClick={() => (navigate ? navigate('/') : (window.location.href = withBasePath('/')))}
+              onClick={() => (navigate ? navigate('/') : (window.location.href = '/'))}
               className="inline-flex items-center justify-center rounded-full border border-brand-dark/20 px-5 py-2 text-sm font-semibold text-brand-dark"
             >
               ⬅ Back to storefront

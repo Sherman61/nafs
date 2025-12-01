@@ -1,26 +1,25 @@
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
-import { stripBasePath, withBasePath } from '../utils/routing.js';
 
 const navigation = [
   { name: 'Collections', href: '#collections' },
   { name: 'Bestsellers', href: '#bestsellers' },
   { name: 'Journal', href: '#journal' },
-  { name: 'Customer service', href: withBasePath('/customer-service') },
-  { name: 'Checkout', href: withBasePath('/checkout') },
-  { name: 'Admin', href: withBasePath('/admin') }
+  { name: 'Customer service', href: '/customer-service' },
+  { name: 'Checkout', href: '/checkout' },
+  { name: 'Admin', href: '/admin' }
 ];
 
 export default function Header({ onCartToggle, onNavigate }) {
   const handleNavClick = (event, href) => {
     if (!onNavigate || !href.startsWith('/')) return;
     event.preventDefault();
-    onNavigate(stripBasePath(href));
+    onNavigate(href);
   };
 
   return (
     <header className="sticky top-0 z-20 bg-brand-light/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <div className="text-2xl font-display tracking-wide">Shiya's Blog</div>
+        <div className="text-2xl font-display tracking-wide">Lefanek Ahava</div>
         <nav className="hidden gap-6 text-sm font-medium md:flex">
           {navigation.map((item) => (
             <a

@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
-import { withBasePath } from '../utils/routing.js';
 
-const CART_STORAGE_KEY = 'shiyas-blog-cart';
+const CART_STORAGE_KEY = 'lefanek-ahava-cart';
 
 const getStoredCart = () => {
   if (typeof window === 'undefined') return [];
@@ -110,7 +109,7 @@ export default function Checkout({ navigate }) {
     if (navigate) {
       navigate(path);
     } else if (typeof window !== 'undefined') {
-      window.location.href = withBasePath(path);
+      window.location.href = path;
     }
   };
 
@@ -120,7 +119,7 @@ export default function Checkout({ navigate }) {
         <header className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.3em] text-brand-dark/60">Checkout</p>
-            <h1 className="text-4xl font-display">Confirm your Shiya's Blog order</h1>
+            <h1 className="text-4xl font-display">Confirm your Lefanek Ahava order</h1>
             <p className="mt-2 text-brand-dark/70">
               Cart items now persist locally so you can design fittings-to-fulfillment flows before wiring them to your API.
             </p>
