@@ -4,6 +4,7 @@ import Checkout from './pages/Checkout.jsx';
 import ProductEdit from './pages/ProductEdit.jsx';
 import CustomerService from './pages/CustomerService.jsx';
 import Storefront from './pages/Storefront.jsx';
+import { stripBasePath, withBasePath } from './utils/routing.js';
 
 const routes = {
   '/': Storefront,
@@ -15,7 +16,7 @@ const routes = {
 
 const getPathname = () => {
   if (typeof window === 'undefined') return '/';
-  return window.location.pathname;
+  return stripBasePath(window.location.pathname);
 };
 
 export default function App() {
@@ -31,9 +32,10 @@ export default function App() {
   const navigate = useCallback(
     (nextPath) => {
       if (typeof window === 'undefined') return;
-      if (!nextPath || nextPath === path) return;
-      window.history.pushState({}, '', nextPath);
-      setPath(nextPath);
+      const normalizedPath = stripBasePath(nextPath);
+      if (!normalizedPath || normalizedPath === path) return;
+      window.history.pushState({}, '', withBasePath(normalizedPath));
+      setPath(normalizedPath);
     },
     [path]
   );
