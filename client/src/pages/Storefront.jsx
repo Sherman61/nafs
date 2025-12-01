@@ -4,8 +4,9 @@ import ProductCard from '../components/ProductCard.jsx';
 import CartDrawer from '../components/CartDrawer.jsx';
 import CategoryPills from '../components/CategoryPills.jsx';
 import { useStorefrontData } from '../hooks/useStorefrontData.js';
+import { withBasePath } from '../utils/routing.js';
 
-const CART_STORAGE_KEY = 'lefanek-ahava-cart';
+const CART_STORAGE_KEY = 'shiyas-blog-cart';
 const testimonials = [
   {
     quote: 'The Ahava tees drape perfectly and still feel respectful enough for Friday errands.',
@@ -82,7 +83,7 @@ export default function Storefront({ navigate }) {
     if (navigate) {
       navigate('/checkout');
     } else if (typeof window !== 'undefined') {
-      window.location.href = '/checkout';
+      window.location.href = withBasePath('/checkout');
     }
   };
 
@@ -92,7 +93,7 @@ export default function Storefront({ navigate }) {
       <main className="mx-auto flex max-w-6xl flex-col gap-16 px-6 py-12">
         <section className="hero-bg overflow-hidden rounded-[40px] bg-brand-dark text-white">
           <div className="space-y-6 p-12 md:p-20">
-            <p className="text-sm uppercase tracking-[0.4em] text-white/80">Lefanek Ahava</p>
+            <p className="text-sm uppercase tracking-[0.4em] text-white/80">Shiya's Blog</p>
             <h1 className="text-4xl font-display leading-tight md:text-6xl">
               T-shirts and Jewish layers for everyday mitzvot moments.
             </h1>
@@ -124,7 +125,7 @@ export default function Storefront({ navigate }) {
           {loading && <p>Loading curated goods…</p>}
           {usedFallback && (
             <p className="rounded-3xl border border-amber-500/40 bg-amber-50 p-4 text-sm text-amber-900">
-              Live inventory is offline, so we are showcasing the Lefanek Ahava lookbook stored in the app bundle.
+              Live inventory is offline, so we are showcasing the Shiya's Blog lookbook stored in the app bundle.
             </p>
           )}
           {!usedFallback && error && <p className="text-red-700">Failed to load data.</p>}
@@ -169,7 +170,7 @@ export default function Storefront({ navigate }) {
               <p className="text-sm uppercase tracking-[0.3em] text-white/70">Journal</p>
               <h2 className="mt-4 text-3xl font-display">Heritage meets modern dev</h2>
               <p className="mt-4 text-white/80">
-                Lefanek Ahava is prototyped with a Node/Express API plus a React + Tailwind storefront.
+                Shiya's Blog is prototyped with a Node/Express API plus a React + Tailwind storefront.
                 Swap the seed data for your commerce backend or a database when you are ready to persist every SKU.
               </p>
               <p className="mt-4 text-sm text-white/70">
@@ -189,7 +190,7 @@ export default function Storefront({ navigate }) {
                 <h3 className="text-xl font-display">Next steps</h3>
                 <p className="mt-2 text-white/80">
                   Connect your preferred commerce backend, wire checkout to a payment provider, and keep
-                  seeding apparel drops straight from Lefanek Ahava’s dashboard.
+                  seeding apparel drops straight from Shiya's Blog’s dashboard.
                 </p>
               </article>
             </div>
